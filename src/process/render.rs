@@ -200,7 +200,7 @@ impl<S: Scene, V: View> RenderWorker<S, V> {
     }
 
     /// Run one ray tracing pass.
-    /// During this process there only one ray will be casted for each pixel.
+    /// During this process one ray will be casted for each pixel.
     pub fn run(&mut self) -> crate::Result<()> {
         self.data.args_set(0, &mut self.kernel)?;
         unsafe {
