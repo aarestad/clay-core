@@ -1,8 +1,4 @@
-use crate::{
-    prelude::*,
-    map::Chain,
-};
-
+use crate::{map::Chain, prelude::*};
 
 /// Some invertible mapping that could be applied to vectors.
 pub trait Map: Pack + Instance<MapClass> {
@@ -19,15 +15,9 @@ impl Class for MapClass {
         "map".to_string()
     }
     fn methods() -> Vec<String> {
-        [
-            "rel",
-            "abs",
-            "rel_inv",
-            "abs_inv",
-            "norm",
-        ]
-        .iter()
-        .map(|m| m.to_string())
-        .collect()
+        ["rel", "abs", "rel_inv", "abs_inv", "norm"]
+            .iter()
+            .map(|m| m.to_string())
+            .collect()
     }
 }

@@ -7,10 +7,10 @@ pub mod result;
 
 /// Serialization of entities for storing them on the device.
 pub mod pack;
-/// Representation of entities that could be stored in the device.
-pub mod store;
 /// Pushing arguments to the device kernel.
 pub mod push;
+/// Representation of entities that could be stored in the device.
+pub mod store;
 /// Rust type hashing to generate unique identfiers in device code.
 pub mod type_hash;
 
@@ -21,12 +21,12 @@ pub mod select;
 
 /// Mappings in render space.
 pub mod map;
-/// Shape of an object. 
-pub mod shape;
 /// Material of an object.
 pub mod material;
 /// Object to render.
 pub mod object;
+/// Shape of an object.
+pub mod shape;
 
 /// Scene to be rendered.
 pub mod scene;
@@ -36,10 +36,10 @@ pub mod view;
 /// Filter for rendered image postprocessing.
 pub mod filter;
 
-/// Context of the device code execution.
-pub mod context;
 /// Various device buffers.
 pub mod buffer;
+/// Context of the device code execution.
+pub mod context;
 /// Functionality for rendering pipeline.
 pub mod process;
 
@@ -48,17 +48,16 @@ pub mod source;
 
 /// Reexport of the basic traits.
 pub mod prelude {
+    pub use crate::class::*;
     pub use crate::pack::*;
     pub use crate::push::*;
     pub use crate::store::*;
     pub use crate::type_hash::*;
-    pub use crate::class::*;
 }
-
 
 pub use error::Error;
 pub use result::Result;
 
-pub use prelude::*;
 pub use context::*;
+pub use prelude::*;
 pub use source::*;

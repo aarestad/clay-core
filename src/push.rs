@@ -1,7 +1,4 @@
-use ocl::{
-    self,
-    builders::KernelBuilder,
-};
+use ocl::{self, builders::KernelBuilder};
 
 /// Something that could be pushed to OpenCL kernel as argumets
 pub trait Push {

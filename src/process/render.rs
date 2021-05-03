@@ -1,28 +1,19 @@
+use crate::{
+    buffer::RenderBuffer, prelude::*, process::Program, scene::Scene, view::View, Context,
+};
+use ocl::{self, builders::KernelBuilder, prm};
+use ocl_include::{Hook, ListHook, MemHook};
 use std::{
-    path::Path,
     collections::HashSet,
     marker::PhantomData,
-    time::{Instant, Duration},
-};
-use ocl::{self, prm, builders::KernelBuilder};
-use ocl_include::{Hook, MemHook, ListHook};
-use crate::{
-    prelude::*,
-    scene::Scene,
-    view::View,
-    
-    Context,
-    process::Program,
-    buffer::RenderBuffer,
+    path::Path,
+    time::{Duration, Instant},
 };
 
 /// Creates new renderer builder with already included device source.
 pub fn create_renderer<S: Scene, V: View>() -> RendererBuilder<S, V> {
     RendererBuilder {
-        list_hook:
-            ListHook::builder()
-            .add_hook(crate::source())
-            .build(),
+        list_hook: ListHook::builder().add_hook(crate::source()).build(),
         phantom: PhantomData,
     }
 }
@@ -53,22 +44,28 @@ pub struct RenderData<S: Scene, V: View> {
 impl<S: Scene, V: View> Renderer<S, V> {
     pub fn new<H: Hook + 'static>(
         dims: (usize, usize),
-        scene: S, view: V,
+        scene: S,
+        view: V,
         hook: H,
     ) -> crate::Result<Self> {
         let mut inst_cache = HashSet::<u64>::new();
         let list_hook = ListHook::builder()
-        .add_hook(hook)
-        .add_hook(
-            MemHook::builder()
-            .add_file(&Path::new("__gen/scene.h"), S::source(&mut inst_cache))?
-            .add_file(&Path::new("__gen/view.h"), V::source(&mut inst_cache))?
-            .build()
-        )
-        .build();
+            .add_hook(hook)
+            .add_hook(
+                MemHook::builder()
+                    .add_file(&Path::new("__gen/scene.h"), S::source(&mut inst_cache))?
+                    .add_file(&Path::new("__gen/view.h"), V::source(&mut inst_cache))?
+                    .build(),
+            )
+            .build();
         let program = Program::new(&list_hook, &Path::new("clay_core/render.c"))?;
 
-        Ok(Self { program, dims, scene, view })
+        Ok(Self {
+            program,
+            dims,
+            scene,
+            view,
+        })
     }
 
     pub fn program(&self) -> &Program {
@@ -76,11 +73,7 @@ impl<S: Scene, V: View> Renderer<S, V> {
     }
 
     pub fn create_worker(&self, context: &Context) -> crate::Result<(RenderWorker<S, V>, String)> {
-        RenderWorker::new(
-            context,
-            self.program(),
-            self.create_data(context)?,
-        )
+        RenderWorker::new(context, self.program(), self.create_data(context)?)
     }
 }
 
@@ -89,14 +82,8 @@ impl<S: Scene, V: View> RendererBuilder<S, V> {
         self.list_hook.add_hook(hook);
     }
 
-    pub fn build(
-        self, dims: (usize, usize),
-        scene: S, view: V,
-    ) -> crate::Result<Renderer<S, V>> {
-        Renderer::<S, V>::new(
-            dims, scene, view,
-            self.list_hook,
-        )
+    pub fn build(self, dims: (usize, usize), scene: S, view: V) -> crate::Result<Renderer<S, V>> {
+        Renderer::<S, V>::new(dims, scene, view, self.list_hook)
     }
 }
 
@@ -190,17 +177,19 @@ impl<S: Scene, V: View> RenderWorker<S, V> {
         let (ocl_prog, message) = program.build(context)?;
 
         let mut kb = ocl::Kernel::builder();
-        kb.program(&ocl_prog)
-        .name("render")
-        .queue(queue.clone());
+        kb.program(&ocl_prog).name("render").queue(queue.clone());
         RenderData::<S, V>::args_def(&mut kb);
-        
+
         let kernel = kb.build()?;
 
-        Ok((RenderWorker {
-            data, kernel,
-            context: context.clone(),
-        }, message))
+        Ok((
+            RenderWorker {
+                data,
+                kernel,
+                context: context.clone(),
+            },
+            message,
+        ))
     }
 
     pub fn data(&self) -> &RenderData<S, V> {
@@ -215,9 +204,10 @@ impl<S: Scene, V: View> RenderWorker<S, V> {
     pub fn run(&mut self) -> crate::Result<()> {
         self.data.args_set(0, &mut self.kernel)?;
         unsafe {
-            self.kernel.cmd()
-            .global_work_size(self.data.screen.dims())
-            .enq()?;
+            self.kernel
+                .cmd()
+                .global_work_size(self.data.screen.dims())
+                .enq()?;
         }
         self.context.queue().finish()?;
         self.data_mut().screen.pass();

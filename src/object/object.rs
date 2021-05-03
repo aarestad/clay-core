@@ -1,9 +1,4 @@
-use crate::{
-    prelude::*,
-    shape::*,
-    material::*,
-};
-
+use crate::{material::*, prelude::*, shape::*};
 
 /// An abstract object that could be drawn completely.
 pub trait Object: Pack + Instance<ObjectClass> {}

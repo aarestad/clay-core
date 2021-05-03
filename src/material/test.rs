@@ -1,9 +1,5 @@
-use std::{
-    collections::HashSet,
-    marker::PhantomData,
-};
-use crate::{prelude::*, material::*};
-
+use crate::{material::*, prelude::*};
+use std::{collections::HashSet, marker::PhantomData};
 
 #[derive(Clone, Debug, Default)]
 pub struct TestMaterial<T: 'static> {
@@ -12,7 +8,9 @@ pub struct TestMaterial<T: 'static> {
 
 impl<T> TestMaterial<T> {
     pub fn new() -> Self {
-        Self { phantom: PhantomData }
+        Self {
+            phantom: PhantomData,
+        }
     }
 }
 
@@ -32,7 +30,11 @@ impl<T> Instance<MaterialClass> for TestMaterial<T> {
 }
 
 impl<T> Pack for TestMaterial<T> {
-    fn size_int() -> usize { 0 }
-    fn size_float() -> usize { 0 }
+    fn size_int() -> usize {
+        0
+    }
+    fn size_float() -> usize {
+        0
+    }
     fn pack_to(&self, _buffer_int: &mut [i32], _buffer_float: &mut [f32]) {}
 }

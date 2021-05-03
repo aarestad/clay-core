@@ -1,13 +1,12 @@
 use ocl;
 
-
 /// Context that represents separate processing entity (often the same as a device).
 #[derive(Clone)]
 pub struct Context {
-    platform:  ocl::Platform,
-    device:    ocl::Device,
-    context:   ocl::Context,
-    queue:     ocl::Queue,
+    platform: ocl::Platform,
+    device: ocl::Device,
+    context: ocl::Context,
+    queue: ocl::Queue,
 }
 
 impl PartialEq for Context {
@@ -19,13 +18,18 @@ impl PartialEq for Context {
 impl Context {
     pub fn new(platform: ocl::Platform, device: ocl::Device) -> crate::Result<Self> {
         let context = ocl::Context::builder()
-        .platform(platform)
-        .devices(device.clone())
-        .build()?;
+            .platform(platform)
+            .devices(device.clone())
+            .build()?;
 
         let queue = ocl::Queue::new(&context, device, None)?;
 
-        Ok(Self { platform, device, context, queue })
+        Ok(Self {
+            platform,
+            device,
+            context,
+            queue,
+        })
     }
 
     pub fn platform(&self) -> &ocl::Platform {

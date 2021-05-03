@@ -10,11 +10,11 @@ macro_rules! shape_select {
             }
         );
         impl $crate::shape::Shape for $Select {}
-        
+
         impl<
             B_: $crate::shape::Bound,
             $(
-                $Param: 
+                $Param:
                     $crate::shape::Shape +
                     $crate::shape::Bounded<B_>
             ),+
@@ -32,10 +32,7 @@ macro_rules! shape_select {
 
 #[cfg(test)]
 mod check {
-    use crate::{
-        shape::test::TestShape,
-        shape_select,
-    };
+    use crate::{shape::test::TestShape, shape_select};
 
     shape_select!(
         TestShapeSelect {

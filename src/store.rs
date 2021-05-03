@@ -1,5 +1,4 @@
-use crate::{Push, Context};
-
+use crate::{Context, Push};
 
 /// Something that could store its data on a device.
 pub trait Store {

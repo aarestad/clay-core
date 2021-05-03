@@ -6,7 +6,6 @@ use std::{
 };
 use walkdir::WalkDir;
 
-
 fn main() {
     let ocl_src_dir = Path::new("ocl-src");
 
@@ -17,23 +16,33 @@ fn main() {
             files.push(entry.into_path());
         }
     }
-    let lines = files.into_iter().map(|path| {
-        let mut content = String::new();
-        File::open(&path).unwrap().read_to_string(&mut content).unwrap();
-        format!(
-            "\t(r#\"{}\"#, r###\"{}\"###),",
-            path.strip_prefix(ocl_src_dir).unwrap().display(),
-            content,
-        )
-    }).collect::<Vec<_>>();
+    let lines = files
+        .into_iter()
+        .map(|path| {
+            let mut content = String::new();
+            File::open(&path)
+                .unwrap()
+                .read_to_string(&mut content)
+                .unwrap();
+            format!(
+                "\t(r#\"{}\"#, r###\"{}\"###),",
+                path.strip_prefix(ocl_src_dir).unwrap().display(),
+                content,
+            )
+        })
+        .collect::<Vec<_>>();
     let text = [
-        format!("const OCL_SRC_LIST: [(&'static str, &'static str); {}] = [", lines.len()),
+        format!(
+            "const OCL_SRC_LIST: [(&'static str, &'static str); {}] = [",
+            lines.len()
+        ),
         lines.join("\n"),
         "];".to_string(),
-    ].join("\n");
+    ]
+    .join("\n");
 
     let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
     let mut out_file = File::create(&out_dir.join("ocl_src_list.rs")).unwrap();
-    
+
     out_file.write_all(text.as_bytes()).unwrap();
 }

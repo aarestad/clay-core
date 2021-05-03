@@ -22,10 +22,7 @@ macro_rules! material_select {
 #[cfg(test)]
 mod check {
     use crate::{
-        material::{
-            Material,
-            test::TestMaterial,
-        },
+        material::{test::TestMaterial, Material},
         material_select,
     };
 

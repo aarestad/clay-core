@@ -1,5 +1,8 @@
+use crate::{
+    map::{Map, MapClass},
+    prelude::*,
+};
 use std::collections::HashSet;
-use crate::{prelude::*, map::{Map, MapClass}};
 
 /// Subsequently chains two mappins together.
 pub struct Chain<F: Map, S: Map> {
@@ -18,7 +21,7 @@ impl<F: Map, S: Map> Map for Chain<F, S> {}
 impl<F: Map, S: Map> Instance<MapClass> for Chain<F, S> {
     fn source(cache: &mut HashSet<u64>) -> String {
         if !cache.insert(Self::type_hash()) {
-            return String::new()
+            return String::new();
         }
         [
             F::source(cache),
@@ -32,7 +35,8 @@ impl<F: Map, S: Map> Instance<MapClass> for Chain<F, S> {
                 F::size_int(),
                 F::size_float(),
             ),
-        ].join("\n")
+        ]
+        .join("\n")
     }
     fn inst_name() -> String {
         format!(
@@ -53,7 +57,7 @@ impl<F: Map, S: Map> Pack for Chain<F, S> {
     }
     fn pack_to(&self, buffer_int: &mut [i32], buffer_float: &mut [f32]) {
         Packer::new(buffer_int, buffer_float)
-        .pack(&self.first)
-        .pack(&self.second);
+            .pack(&self.first)
+            .pack(&self.second);
     }
 }

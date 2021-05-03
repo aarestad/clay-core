@@ -1,11 +1,4 @@
-use crate::{
-    prelude::*,
-    map::Map, 
-    shape::ShapeMapper,
-    material::Material, 
-    object::Covered,
-};
-
+use crate::{map::Map, material::Material, object::Covered, prelude::*, shape::ShapeMapper};
 
 /// Shape of an object.
 ///

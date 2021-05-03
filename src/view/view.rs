@@ -1,6 +1,5 @@
-use std::collections::HashSet;
 use crate::prelude::*;
-
+use std::collections::HashSet;
 
 /// View is an entity the represents virtual camera.
 ///

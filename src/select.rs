@@ -126,11 +126,8 @@ macro_rules! instance_select {
 #[cfg(test)]
 mod check {
     use crate::{
-        shape::{
-            Shape, ShapeClass,
-            test::TestShape,
-        },
         instance_select,
+        shape::{test::TestShape, Shape, ShapeClass},
     };
 
     instance_select!(

@@ -1,8 +1,4 @@
-use crate::{
-    prelude::*,
-    shape::*,
-};
-
+use crate::{prelude::*, shape::*};
 
 /// Bounding shape that contains the whole object inside.
 pub trait Bound: Pack + Instance<BoundClass> {}

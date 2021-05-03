@@ -14,7 +14,7 @@ macro_rules! object_select {
         impl<
             B_: $crate::shape::Bound,
             $(
-                $Param: 
+                $Param:
                     $crate::object::Object +
                     $crate::shape::Bounded<B_>
             ),+
@@ -31,7 +31,7 @@ macro_rules! object_select {
         impl<
             T_: $crate::shape::Target,
             $(
-                $Param: 
+                $Param:
                     $crate::object::Object +
                     $crate::shape::Targeted<T_>
             ),+
@@ -50,10 +50,7 @@ macro_rules! object_select {
 #[cfg(test)]
 mod check {
     use crate::{
-        shape::test::TestShape,
-        material::test::TestMaterial,
-        object::Covered,
-        object_select,
+        material::test::TestMaterial, object::Covered, object_select, shape::test::TestShape,
     };
 
     object_select!(

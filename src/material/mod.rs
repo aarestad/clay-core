@@ -4,8 +4,8 @@ pub use material::*;
 mod colored;
 pub use colored::*;
 
-mod select;
 mod combine;
+mod select;
 
 #[cfg(test)]
 pub mod test;

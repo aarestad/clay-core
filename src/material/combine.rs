@@ -1,7 +1,9 @@
 /// Local macro for replacing tokens.
 #[macro_export]
 macro_rules! _replace {
-    ($_t:tt, $sub:expr) => { $sub };
+    ($_t:tt, $sub:expr) => {
+        $sub
+    };
 }
 
 /// The macro for combining materials.
@@ -127,10 +129,7 @@ macro_rules! material_combine {
 #[cfg(test)]
 #[allow(dead_code)]
 mod check {
-    use crate::{
-        material::test::TestMaterial,
-        material_combine,
-    };
+    use crate::{material::test::TestMaterial, material_combine};
 
     material_combine!(TestCombine {
         m1: TestMaterial<i32>,

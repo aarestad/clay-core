@@ -1,6 +1,5 @@
-use std::collections::HashSet;
 use crate::Store;
-
+use std::collections::HashSet;
 
 /// Scene is the something that could be rendered.
 ///

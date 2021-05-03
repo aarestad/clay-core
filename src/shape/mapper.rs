@@ -1,9 +1,5 @@
+use crate::{map::Map, prelude::*, shape::*};
 use std::collections::HashSet;
-use crate::{
-    prelude::*,
-    map::Map,
-    shape::*,
-};
 
 /// A new shape obtained by applying some mapping to another shape.
 pub struct ShapeMapper<S: Shape, M: Map> {
@@ -22,7 +18,7 @@ impl<S: Shape, M: Map> Shape for ShapeMapper<S, M> {}
 impl<S: Shape, M: Map> Instance<ShapeClass> for ShapeMapper<S, M> {
     fn source(cache: &mut HashSet<u64>) -> String {
         if !cache.insert(Self::type_hash()) {
-            return String::new()
+            return String::new();
         }
         [
             S::source(cache),
@@ -33,18 +29,16 @@ impl<S: Shape, M: Map> Instance<ShapeClass> for ShapeMapper<S, M> {
                 Self::inst_name(),
                 S::inst_name(),
                 M::inst_name(),
-                S::size_int(), S::size_float(),
+                S::size_int(),
+                S::size_float(),
             ),
-        ].join("\n")
+        ]
+        .join("\n")
     }
     fn inst_name() -> String {
-        format!(
-            "__mapper_{:x}",
-            Self::type_hash(),
-        )
+        format!("__mapper_{:x}", Self::type_hash(),)
     }
 }
-
 
 impl<S: Shape, M: Map> Pack for ShapeMapper<S, M> {
     fn size_int() -> usize {
@@ -55,7 +49,7 @@ impl<S: Shape, M: Map> Pack for ShapeMapper<S, M> {
     }
     fn pack_to(&self, buffer_int: &mut [i32], buffer_float: &mut [f32]) {
         Packer::new(buffer_int, buffer_float)
-        .pack(&self.shape)
-        .pack(&self.map);
+            .pack(&self.shape)
+            .pack(&self.map);
     }
 }

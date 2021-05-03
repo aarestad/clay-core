@@ -1,8 +1,7 @@
-use std::io;
 use std::fmt;
+use std::io;
 
 use ocl;
-
 
 #[derive(Debug)]
 pub enum Error {

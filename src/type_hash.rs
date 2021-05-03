@@ -1,7 +1,7 @@
 use std::{
-    hash::{Hash, Hasher},
     any::TypeId,
     collections::hash_map::DefaultHasher,
+    hash::{Hash, Hasher},
 };
 
 /// Trait that allows to get the hash of the Rust type.

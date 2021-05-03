@@ -1,15 +1,11 @@
-use nalgebra::{Vector3};
-use crate::{
-    prelude::*,
-    material::Colored,
-};
-
+use crate::{material::Colored, prelude::*};
+use nalgebra::Vector3;
 
 /// Material of an object surface.
 ///
 /// It specifies the way how does ray bounce off the surface.
 /// It defines the color, specularity, opacity, diffusion,
-/// radiance and other properties of the object surface. 
+/// radiance and other properties of the object surface.
 pub trait Material: Pack + Instance<MaterialClass> {
     /// Brightness of the material.
     ///

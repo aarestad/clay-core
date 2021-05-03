@@ -1,9 +1,5 @@
+use crate::{map::*, object::*, prelude::*};
 use std::collections::HashSet;
-use crate::{
-    prelude::*,
-    map::*,
-    object::*,
-};
 
 /// A new object obtained by applying some mapping to another object.
 pub struct ObjectMapper<O: Object, M: Map> {
@@ -22,7 +18,7 @@ impl<O: Object, M: Map> Object for ObjectMapper<O, M> {}
 impl<O: Object, M: Map> Instance<ObjectClass> for ObjectMapper<O, M> {
     fn source(cache: &mut HashSet<u64>) -> String {
         if !cache.insert(Self::type_hash()) {
-            return String::new()
+            return String::new();
         }
         [
             O::source(cache),
@@ -33,18 +29,16 @@ impl<O: Object, M: Map> Instance<ObjectClass> for ObjectMapper<O, M> {
                 Self::inst_name(),
                 O::inst_name(),
                 M::inst_name(),
-                O::size_int(), O::size_float(),
+                O::size_int(),
+                O::size_float(),
             ),
-        ].join("\n")
+        ]
+        .join("\n")
     }
     fn inst_name() -> String {
-        format!(
-            "__mapper_{:x}",
-            Self::type_hash(),
-        )
+        format!("__mapper_{:x}", Self::type_hash(),)
     }
 }
-
 
 impl<O: Object, M: Map> Pack for ObjectMapper<O, M> {
     fn size_int() -> usize {
@@ -55,7 +49,7 @@ impl<O: Object, M: Map> Pack for ObjectMapper<O, M> {
     }
     fn pack_to(&self, buffer_int: &mut [i32], buffer_float: &mut [f32]) {
         Packer::new(buffer_int, buffer_float)
-        .pack(&self.object)
-        .pack(&self.map);
+            .pack(&self.object)
+            .pack(&self.map);
     }
 }

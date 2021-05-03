@@ -1,7 +1,4 @@
-use crate::{
-    prelude::*,
-};
-
+use crate::prelude::*;
 
 /// Target is a shape that is able to uniformly draw a random vector
 /// pointing to itself from any given point in space.
@@ -14,9 +11,7 @@ impl Class for TargetClass {
         "target".to_string()
     }
     fn methods() -> Vec<String> {
-        vec![
-            "sample".to_string(),
-        ]
+        vec!["sample".to_string()]
     }
 }
 
